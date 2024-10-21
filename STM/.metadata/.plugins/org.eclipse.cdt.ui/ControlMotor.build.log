@@ -1,0 +1,10 @@
+18:16:34 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-size  ControlMotor.elf 
+   text	   data	    bss	    dec	    hex	filename
+   8032	     20	   1644	   9696	   25e0	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+
+18:16:35 Build Finished. 0 errors, 0 warnings. (took 784ms)
+
