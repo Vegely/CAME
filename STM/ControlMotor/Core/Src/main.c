@@ -44,11 +44,10 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN PV */
-uint32_t counter=0;
 #define clickVuelta 48
+uint32_t counter=0;
 int16_t count;
-//PErmite controlar el overflow. cuando hace overflow cambia de signo
-//Ver cuantos clicks esta contando por cada vez que aumenta el counter
+//Permite controlar el overflow. cuando hace overflow cambia de signo
 int16_t position[2]={0,0};
 int actualSpeed[2][4] = {{0,0,0,0},{0,0,0,0}};
 int avgSpeed[2]={0,0};

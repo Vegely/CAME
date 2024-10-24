@@ -1,0 +1,14 @@
+
+*.log
+*.log
+*.pdom
+*.index
+*.tree
+*.xml
+*.xmi
+*.ini
+*.elf
+*.list
+*.cyclo
+*.o
+*.su

@@ -352,8 +352,8 @@ Disassembly of section .text:
  80004d2:	bf00      	nop
 
 080004d4 <AverageSpeed>:
-//PErmite controlar el overflow. cuando hace overflow cambia de signo
-//Ver cuantos clicks esta contando por cada vez que aumenta el counter
+int16_t count;
+//Permite controlar el overflow. cuando hace overflow cambia de signo
 int16_t position[2]={0,0};
 int actualSpeed[2][4] = {{0,0,0,0},{0,0,0,0}};
 int avgSpeed[2]={0,0};
