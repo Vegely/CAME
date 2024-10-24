@@ -44,17 +44,9 @@ TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN PV */
 uint32_t counter=0;
-#define clickVuelta 48
-int16_t count; //PErmite controlar el overflow. cuando hace overflow cambia de signo
-//Ver cuantos clicks esta contando por cada vez que aumenta el counter
-int16_t position=0;
-int speed[4] = {0};
-int actualSpeed = 0;
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 	counter=__HAL_TIM_GetCounter(htim);
-	count = (int16_t)counter; // To have + and - values (ccw and cw)
-	position = count;
 }
 /* USER CODE END PV */
 

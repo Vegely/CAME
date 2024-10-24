@@ -59,8 +59,8 @@ extern TIM_HandleTypeDef htim2;
 /* USER CODE BEGIN EV */
 int indx =0; //Keep track of miliseconds
 int16_t oldpos=0;
-
-#define movingAvgDelay 250
+#define speedVectorCount 4
+#define movingAvgDelay 125
 #define clicksPerTurn 48
 
 
@@ -196,7 +196,7 @@ void SysTick_Handler(void)
 	indx++;
 
 		if (indx == movingAvgDelay){
-			actualSpeed =(position - oldpos) *1000/ movingAvgDelay / clicksPerTurn;
+			actualSpeed =(position - oldpos) / (movingAvgDelay / 1000) / clicksPerTurn;
 			oldpos = position;
 			indx = 0;
 		}

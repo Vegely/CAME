@@ -59,13 +59,30 @@ extern TIM_HandleTypeDef htim2;
 /* USER CODE BEGIN EV */
 int indx =0; //Keep track of miliseconds
 int16_t oldpos=0;
-
-#define movingAvgDelay 250
+#define speedVectorCount 4
+#define movingAvgDelay 125
 #define clicksPerTurn 48
 
+uint8_t movingAvgIterator = 0;
+
+int average(int* data, uint8_t size)
+{
+	int result = 0;
+	int i = 0;
+
+	for (; i < speedVectorCount; i++)
+	{
+		result += data[i]/speedVectorCount;
+	}
+
+	return result;
+}
 
 
+extern TIM_HandleTypeDef htim2;
 
+
+extern int speed[speedVectorCount];
 extern int actualSpeed;
 extern int16_t position;
 /* USER CODE END EV */
@@ -196,7 +213,11 @@ void SysTick_Handler(void)
 	indx++;
 
 		if (indx == movingAvgDelay){
-			actualSpeed =(position - oldpos) *1000/ movingAvgDelay / clicksPerTurn;
+
+			movingAvgIterator = (movingAvgIterator + 1) % speedVectorCount;
+			speed[movingAvgIterator] = ((position - oldpos) / (movingAvgDelay / 1000));
+
+			actualSpeed = average(speed, speedVectorCount) / clicksPerTurn;
 			oldpos = position;
 			indx = 0;
 		}

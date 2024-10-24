@@ -57,17 +57,7 @@
 /* External variables --------------------------------------------------------*/
 extern TIM_HandleTypeDef htim2;
 /* USER CODE BEGIN EV */
-int indx =0; //Keep track of miliseconds
-int16_t oldpos=0;
 
-#define movingAvgDelay 250
-#define clicksPerTurn 48
-
-
-
-
-extern int actualSpeed;
-extern int16_t position;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -193,13 +183,7 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
-	indx++;
 
-		if (indx == movingAvgDelay){
-			actualSpeed =(position - oldpos) *1000/ movingAvgDelay / clicksPerTurn;
-			oldpos = position;
-			indx = 0;
-		}
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */

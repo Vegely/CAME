@@ -196,7 +196,7 @@ void SysTick_Handler(void)
 	indx++;
 
 		if (indx == movingAvgDelay){
-			actualSpeed =(position - oldpos) *1000/ movingAvgDelay / clicksPerTurn;
+			actualSpeed =(position - oldpos) / (movingAvgDelay / 1000) / clicksPerTurn;
 			oldpos = position;
 			indx = 0;
 		}
