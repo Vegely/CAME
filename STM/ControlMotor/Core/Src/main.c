@@ -44,8 +44,8 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN PV */
-#define clickVuelta 48
 uint32_t counter=0;
+#define clickVuelta 48
 int16_t count;
 //Permite controlar el overflow. cuando hace overflow cambia de signo
 int16_t position[2]={0,0};
