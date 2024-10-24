@@ -41,20 +41,38 @@
 
 /* Private variables ---------------------------------------------------------*/
 TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN PV */
 uint32_t counter=0;
 #define clickVuelta 48
-int16_t count; //PErmite controlar el overflow. cuando hace overflow cambia de signo
+int16_t count;
+//PErmite controlar el overflow. cuando hace overflow cambia de signo
 //Ver cuantos clicks esta contando por cada vez que aumenta el counter
-int16_t position=0;
-int speed[4] = {0};
-int actualSpeed = 0;
-
+int16_t position[2]={0,0};
+int actualSpeed[2][4] = {{0,0,0,0},{0,0,0,0}};
+int avgSpeed[2]={0,0};
+void AverageSpeed(int speed[2][4],int _avgSpeed[2]){
+	int i,j;
+	for (i=0; i < 2; i++) {
+	    for (j=0; j < 4; j++) {
+	        _avgSpeed[i] += speed[i][j] / 4;
+	    }
+	}
+}
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 	counter=__HAL_TIM_GetCounter(htim);
 	count = (int16_t)counter; // To have + and - values (ccw and cw)
-	position = count;
+	if (htim==&htim2)
+	{
+		position[0] = count;
+	}
+	else if(htim==&htim3)
+	{
+		position[1] = count;
+	}
+
+
 }
 /* USER CODE END PV */
 
@@ -62,6 +80,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM2_Init(void);
+static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -101,8 +120,10 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM2_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Encoder_Start_IT(&htim2, TIM_CHANNEL_ALL);
+  HAL_TIM_Encoder_Start_IT(&htim3, TIM_CHANNEL_ALL);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -110,7 +131,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  AverageSpeed(actualSpeed,avgSpeed);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -207,6 +228,55 @@ static void MX_TIM2_Init(void)
   /* USER CODE BEGIN TIM2_Init 2 */
 
   /* USER CODE END TIM2_Init 2 */
+
+}
+
+/**
+  * @brief TIM3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM3_Init(void)
+{
+
+  /* USER CODE BEGIN TIM3_Init 0 */
+
+  /* USER CODE END TIM3_Init 0 */
+
+  TIM_Encoder_InitTypeDef sConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM3_Init 1 */
+
+  /* USER CODE END TIM3_Init 1 */
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 0;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 65535;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
+  sConfig.IC1Polarity = TIM_ICPOLARITY_FALLING;
+  sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
+  sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
+  sConfig.IC1Filter = 0;
+  sConfig.IC2Polarity = TIM_ICPOLARITY_FALLING;
+  sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
+  sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
+  sConfig.IC2Filter = 0;
+  if (HAL_TIM_Encoder_Init(&htim3, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM3_Init 2 */
+
+  /* USER CODE END TIM3_Init 2 */
 
 }
 

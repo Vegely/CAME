@@ -56,18 +56,19 @@
 
 /* External variables --------------------------------------------------------*/
 extern TIM_HandleTypeDef htim2;
+extern TIM_HandleTypeDef htim3;
 /* USER CODE BEGIN EV */
 int indx =0; //Keep track of miliseconds
-int16_t oldpos=0;
+int16_t oldpos[2]={0,0};
 
 #define movingAvgDelay 250
 #define clicksPerTurn 48
+uint8_t indexIterator=0;
 
 
 
-
-extern int actualSpeed;
-extern int16_t position;
+extern int actualSpeed[2][4];
+extern int16_t position[2];
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -196,8 +197,11 @@ void SysTick_Handler(void)
 	indx++;
 
 		if (indx == movingAvgDelay){
-			actualSpeed =(position - oldpos) *1000/ movingAvgDelay / clicksPerTurn;
-			oldpos = position;
+			actualSpeed[0][indexIterator] =(position[0] - oldpos[0]) *1000*60/ movingAvgDelay / clicksPerTurn;
+			actualSpeed[1][indexIterator]=(position[1] - oldpos[1]) *1000*60/ movingAvgDelay / clicksPerTurn;
+			oldpos[0] = position[0];
+			oldpos[1] = position[1];
+			indexIterator=(indexIterator++)%4;
 			indx = 0;
 		}
   /* USER CODE END SysTick_IRQn 0 */
@@ -226,6 +230,20 @@ void TIM2_IRQHandler(void)
   /* USER CODE BEGIN TIM2_IRQn 1 */
 
   /* USER CODE END TIM2_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM3 global interrupt.
+  */
+void TIM3_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM3_IRQn 0 */
+
+  /* USER CODE END TIM3_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim3);
+  /* USER CODE BEGIN TIM3_IRQn 1 */
+
+  /* USER CODE END TIM3_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
