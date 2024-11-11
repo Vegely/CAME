@@ -202,3 +202,17 @@ arm-none-eabi-size  ControlMotor.elf
   12136	     20	   1852	  14008	   36b8	ControlMotor.elf
 Finished building: default.size.stdout
  
+17:07:07 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-size  ControlMotor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12136	     20	   1852	  14008	   36b8	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+17:12:01 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-size  ControlMotor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12136	     20	   1852	  14008	   36b8	ControlMotor.elf
+Finished building: default.size.stdout
+ 
