@@ -2,3 +2,5 @@ counter
 position
 actualSpeed
 avgSpeed
+iteradorIndice
+velocityOutput

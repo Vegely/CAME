@@ -63,7 +63,7 @@ int16_t oldpos[2]={0,0};
 
 #define movingAvgDelay 250
 #define clicksPerTurn 48
-uint8_t indexIterator=0;
+extern uint8_t iteradorIndice;
 
 
 
@@ -197,11 +197,11 @@ void SysTick_Handler(void)
 	indx++;
 
 		if (indx == movingAvgDelay){
-			actualSpeed[0][indexIterator] =(position[0] - oldpos[0]) *1000*60/ movingAvgDelay / clicksPerTurn;
-			actualSpeed[1][indexIterator]=(position[1] - oldpos[1]) *1000*60/ movingAvgDelay / clicksPerTurn;
+			actualSpeed[0][iteradorIndice] =(position[0] - oldpos[0]) *1000*60/ movingAvgDelay / clicksPerTurn;
+			actualSpeed[1][iteradorIndice]=(position[1] - oldpos[1]) *1000*60/ movingAvgDelay / clicksPerTurn;
 			oldpos[0] = position[0];
 			oldpos[1] = position[1];
-			indexIterator=(indexIterator++)%4;
+			iteradorIndice=(iteradorIndice+1)%4;
 			indx = 0;
 		}
   /* USER CODE END SysTick_IRQn 0 */

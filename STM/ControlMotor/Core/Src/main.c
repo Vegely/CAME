@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include <stdlib.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -42,18 +43,22 @@
 /* Private variables ---------------------------------------------------------*/
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim4;
 
 /* USER CODE BEGIN PV */
 uint32_t counter=0;
 #define clickVuelta 48
-int16_t count;
-//Permite controlar el overflow. cuando hace overflow cambia de signo
+int16_t count; //Permite controlar el overflow. cuando hace overflow cambia de signo
 int16_t position[2]={0,0};
 int actualSpeed[2][4] = {{0,0,0,0},{0,0,0,0}};
 int avgSpeed[2]={0,0};
+uint8_t iteradorIndice=0;
+int velocityOutput[2]={0,0};
+int t=0;
 void AverageSpeed(int speed[2][4],int _avgSpeed[2]){
 	int i,j;
 	for (i=0; i < 2; i++) {
+		_avgSpeed[i]=0;
 	    for (j=0; j < 4; j++) {
 	        _avgSpeed[i] += speed[i][j] / 4;
 	    }
@@ -73,6 +78,57 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 
 
 }
+
+
+void setTimers(int _velocityOutput[2])
+{
+	//Important to set between 0 and ARR=3599
+	//We asume that _velocityOutput[0] TIM24 is the left motor and
+	//_velocityOutput[1] the right motor TIM13. If the value is positive
+	//the motor drives forward
+	if (velocityOutput[0]==0)
+	{
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_4, 0);
+	    __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, 0);
+
+	}
+	else
+	{
+		if (velocityOutput[0]>0) //Forward
+		{
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_4, 0);
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, abs(velocityOutput[0]));
+		}
+		else //Backward
+		{
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_4,abs(velocityOutput[0]));
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, 0);
+		}
+	}
+
+	if (velocityOutput[1]==0)
+		{
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3, 0);
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
+
+		}
+	else
+	{
+		if (velocityOutput[1]>0) //Forward
+		{
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3, 0);
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, abs(velocityOutput[1]));
+		}
+		else //Backward
+		{
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3, abs(velocityOutput[1]));
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
+		}
+	}
+
+
+
+}
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -80,6 +136,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
+static void MX_TIM4_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -120,17 +177,47 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Encoder_Start_IT(&htim2, TIM_CHANNEL_ALL);
   HAL_TIM_Encoder_Start_IT(&htim3, TIM_CHANNEL_ALL);
+  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+	if(t+1000>HAL_GetTick()&&HAL_GetTick()>t+500)
+	{
+		velocityOutput[0]=0;
+		velocityOutput[1]=0;
+	}
+	if(t+1500>HAL_GetTick()&&HAL_GetTick()>t+1000)
+	{
+		velocityOutput[0]=3400;
+		velocityOutput[1]=3400;
+	}
+
+	if(t+2000>HAL_GetTick()&&HAL_GetTick()>t+1500)
+	{
+		velocityOutput[0]=-3400;
+		velocityOutput[1]=-3400;
+	}
+	if(HAL_GetTick()>t+2000)
+	{
+		velocityOutput[0]=-1700;
+		velocityOutput[1]=1700;
+		t=HAL_GetTick();
+	}
+	setTimers(velocityOutput);
+
     /* USER CODE END WHILE */
-	  AverageSpeed(actualSpeed,avgSpeed);
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -280,6 +367,77 @@ static void MX_TIM3_Init(void)
 }
 
 /**
+  * @brief TIM4 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM4_Init(void)
+{
+
+  /* USER CODE BEGIN TIM4_Init 0 */
+
+  /* USER CODE END TIM4_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM4_Init 1 */
+
+  /* USER CODE END TIM4_Init 1 */
+  htim4.Instance = TIM4;
+  htim4.Init.Prescaler = 0;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 3600-1;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM4_Init 2 */
+
+  /* USER CODE END TIM4_Init 2 */
+  HAL_TIM_MspPostInit(&htim4);
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -292,6 +450,7 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

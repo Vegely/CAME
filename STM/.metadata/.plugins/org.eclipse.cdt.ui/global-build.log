@@ -1,4 +1,33 @@
-00:28:10 **** Incremental Build of configuration Debug for project ControlMotor ****
+19:26:08 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Core/Src/main.c: In function 'setTimers':
+../Core/Src/main.c:98:70: warning: implicit declaration of function 'abs' [-Wimplicit-function-declaration]
+   98 |                         __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, abs(velocityOutput[0]));
+      |                                                                      ^~~
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:1395:72: note: in definition of macro '__HAL_TIM_SET_COMPARE'
+ 1395 |   (((__CHANNEL__) == TIM_CHANNEL_1) ? ((__HANDLE__)->Instance->CCR1 = (__COMPARE__)) :\
+      |                                                                        ^~~~~~~~~~~
+../Core/Src/main.c:21:1: note: include '<stdlib.h>' or provide a declaration of 'abs'
+   20 | #include "main.h"
+  +++ |+#include <stdlib.h>
+   21 | 
+arm-none-eabi-gcc -o "ControlMotor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\bogur\Desktop\Came\CAME\STM\ControlMotor\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ControlMotor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: ControlMotor.elf
+ 
+arm-none-eabi-size  ControlMotor.elf 
+arm-none-eabi-objdump -h -S ControlMotor.elf  > "ControlMotor.list"
+   text	   data	    bss	    dec	    hex	filename
+  11924	     20	   1852	  13796	   35e4	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+Finished building: ControlMotor.list
+ 
+19:27:02 **** Incremental Build of configuration Debug for project ControlMotor ****
 make -j12 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
 arm-none-eabi-gcc -o "ControlMotor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\bogur\Desktop\Came\CAME\STM\ControlMotor\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ControlMotor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
@@ -7,8 +36,169 @@ Finished building target: ControlMotor.elf
 arm-none-eabi-size  ControlMotor.elf 
 arm-none-eabi-objdump -h -S ControlMotor.elf  > "ControlMotor.list"
    text	   data	    bss	    dec	    hex	filename
-   8700	     20	   1780	  10500	   2904	ControlMotor.elf
+  11924	     20	   1852	  13796	   35e4	ControlMotor.elf
 Finished building: default.size.stdout
  
 Finished building: ControlMotor.list
+ 
+19:29:13 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-size  ControlMotor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  11924	     20	   1852	  13796	   35e4	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+19:29:55 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "ControlMotor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\bogur\Desktop\Came\CAME\STM\ControlMotor\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ControlMotor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: ControlMotor.elf
+ 
+arm-none-eabi-size  ControlMotor.elf 
+arm-none-eabi-objdump -h -S ControlMotor.elf  > "ControlMotor.list"
+   text	   data	    bss	    dec	    hex	filename
+  11924	     20	   1852	  13796	   35e4	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+Finished building: ControlMotor.list
+ 
+19:32:50 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "ControlMotor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\bogur\Desktop\Came\CAME\STM\ControlMotor\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ControlMotor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: ControlMotor.elf
+ 
+arm-none-eabi-size  ControlMotor.elf 
+arm-none-eabi-objdump -h -S ControlMotor.elf  > "ControlMotor.list"
+   text	   data	    bss	    dec	    hex	filename
+  11924	     20	   1852	  13796	   35e4	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+Finished building: ControlMotor.list
+ 
+19:35:22 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "ControlMotor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\bogur\Desktop\Came\CAME\STM\ControlMotor\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ControlMotor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: ControlMotor.elf
+ 
+arm-none-eabi-size  ControlMotor.elf 
+arm-none-eabi-objdump -h -S ControlMotor.elf  > "ControlMotor.list"
+   text	   data	    bss	    dec	    hex	filename
+  11728	     20	   1844	  13592	   3518	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+Finished building: ControlMotor.list
+ 
+19:36:57 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "ControlMotor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\bogur\Desktop\Came\CAME\STM\ControlMotor\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ControlMotor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: ControlMotor.elf
+ 
+arm-none-eabi-size  ControlMotor.elf 
+arm-none-eabi-objdump -h -S ControlMotor.elf  > "ControlMotor.list"
+   text	   data	    bss	    dec	    hex	filename
+  11752	     20	   1844	  13616	   3530	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+Finished building: ControlMotor.list
+ 
+19:39:43 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "ControlMotor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\bogur\Desktop\Came\CAME\STM\ControlMotor\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ControlMotor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: ControlMotor.elf
+ 
+arm-none-eabi-size  ControlMotor.elf 
+arm-none-eabi-objdump -h -S ControlMotor.elf  > "ControlMotor.list"
+   text	   data	    bss	    dec	    hex	filename
+  12120	     20	   1852	  13992	   36a8	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+Finished building: ControlMotor.list
+ 
+19:43:09 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-size  ControlMotor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12120	     20	   1852	  13992	   36a8	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+19:44:28 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "ControlMotor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\bogur\Desktop\Came\CAME\STM\ControlMotor\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ControlMotor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: ControlMotor.elf
+ 
+arm-none-eabi-size  ControlMotor.elf 
+arm-none-eabi-objdump -h -S ControlMotor.elf  > "ControlMotor.list"
+   text	   data	    bss	    dec	    hex	filename
+  12136	     20	   1852	  14008	   36b8	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+Finished building: ControlMotor.list
+ 
+19:48:00 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-size  ControlMotor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12136	     20	   1852	  14008	   36b8	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+19:48:52 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "ControlMotor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\bogur\Desktop\Came\CAME\STM\ControlMotor\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ControlMotor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: ControlMotor.elf
+ 
+arm-none-eabi-size  ControlMotor.elf 
+arm-none-eabi-objdump -h -S ControlMotor.elf  > "ControlMotor.list"
+   text	   data	    bss	    dec	    hex	filename
+  12136	     20	   1852	  14008	   36b8	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+Finished building: ControlMotor.list
+ 
+19:57:15 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-size  ControlMotor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12136	     20	   1852	  14008	   36b8	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+14:50:48 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-size  ControlMotor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12136	     20	   1852	  14008	   36b8	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+19:04:48 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-size  ControlMotor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12136	     20	   1852	  14008	   36b8	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+19:07:12 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-size  ControlMotor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12136	     20	   1852	  14008	   36b8	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+19:08:20 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-size  ControlMotor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12136	     20	   1852	  14008	   36b8	ControlMotor.elf
+Finished building: default.size.stdout
+ 
+19:08:24 **** Incremental Build of configuration Debug for project ControlMotor ****
+make -j12 all 
+arm-none-eabi-size  ControlMotor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12136	     20	   1852	  14008	   36b8	ControlMotor.elf
+Finished building: default.size.stdout
  
