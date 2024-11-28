@@ -18,7 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include <stdlib.h>
+#include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -50,9 +50,10 @@ uint32_t counter=0;
 #define clickVuelta 48
 int16_t count; //Permite controlar el overflow. cuando hace overflow cambia de signo
 int16_t position[2]={0,0};
-int actualSpeed[2][4] = {{0,0,0,0},{0,0,0,0}};
-int avgSpeed[2]={0,0};
+float actualSpeed[2][4] = {{0,0,0,0},{0,0,0,0}};
+float avgSpeed[2]={0,0};
 uint8_t iteradorIndice=0;
+uint8_t velocidadActualizada = 0;
 int velocityOutput[2]={0,0};
 int t=0;
 void AverageSpeed(int speed[2][4],int _avgSpeed[2]){
@@ -153,6 +154,7 @@ static void MX_TIM4_Init(void);
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -178,6 +180,7 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Encoder_Start_IT(&htim2, TIM_CHANNEL_ALL);
   HAL_TIM_Encoder_Start_IT(&htim3, TIM_CHANNEL_ALL);
@@ -191,30 +194,38 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
-	if(t+1000>HAL_GetTick()&&HAL_GetTick()>t+500)
-	{
-		velocityOutput[0]=0;
-		velocityOutput[1]=0;
-	}
-	if(t+1500>HAL_GetTick()&&HAL_GetTick()>t+1000)
-	{
-		velocityOutput[0]=3400;
-		velocityOutput[1]=3400;
-	}
-
-	if(t+2000>HAL_GetTick()&&HAL_GetTick()>t+1500)
-	{
-		velocityOutput[0]=-3400;
-		velocityOutput[1]=-3400;
-	}
-	if(HAL_GetTick()>t+2000)
-	{
-		velocityOutput[0]=-1700;
-		velocityOutput[1]=1700;
-		t=HAL_GetTick();
-	}
+	  //***************************//
+	  velocityOutput[0]=0;
+	  velocityOutput[1]=3400;
+	//***************************//
 	setTimers(velocityOutput);
+
+	if (velocidadActualizada)
+	{
+		char msg_izq[8];
+		char msg_dch[8];
+		char valor_izq[7];
+		char valor_dch[7];
+		char msg[16];
+		//sprintf(valor_izq, "%.3f\n", actualSpeed[0][iteradorIndice]);
+		//sprintf(valor_dch, "%.3f\n", actualSpeed[1][iteradorIndice]);
+
+
+//		if (actualSpeed[0][iteradorIndice] >= 0)
+//			sprintf(msg_izq, "%s%s", "i+", valor_izq);
+//		else
+//			sprintf(msg_izq, "%s%s", "i", valor_izq);
+
+//		if (actualSpeed[1][iteradorIndice] >= 0)
+//			sprintf(msg_dch, "%s%s", "d+", valor_dch);
+//		else
+//			sprintf(msg_dch, "%s%s", "d", valor_dch);
+
+		sprintf(msg, "d+%.3f\n", actualSpeed[1][iteradorIndice]);
+
+		CDC_Transmit_FS(msg, sizeof(msg));
+		velocidadActualizada = 0;
+    }
 
     /* USER CODE END WHILE */
 
@@ -245,8 +256,8 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 4;
-  RCC_OscInitStruct.PLL.PLLN = 72;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLN = 192;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
   RCC_OscInitStruct.PLL.PLLQ = 8;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -260,9 +271,9 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK)
   {
     Error_Handler();
   }

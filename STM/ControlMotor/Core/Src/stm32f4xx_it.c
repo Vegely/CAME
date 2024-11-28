@@ -55,6 +55,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
 /* USER CODE BEGIN EV */
@@ -65,9 +66,9 @@ int16_t oldpos[2]={0,0};
 #define clicksPerTurn 48
 extern uint8_t iteradorIndice;
 
+extern uint8_t velocidadActualizada;
 
-
-extern int actualSpeed[2][4];
+extern float actualSpeed[2][4];
 extern int16_t position[2];
 /* USER CODE END EV */
 
@@ -197,12 +198,13 @@ void SysTick_Handler(void)
 	indx++;
 
 		if (indx == movingAvgDelay){
-			actualSpeed[0][iteradorIndice] =(position[0] - oldpos[0]) *1000*60/ movingAvgDelay / clicksPerTurn;
+			actualSpeed[0][iteradorIndice] =(position[0] - oldpos[0]) *1000/ movingAvgDelay / clicksPerTurn;
 			actualSpeed[1][iteradorIndice]=(position[1] - oldpos[1]) *1000*60/ movingAvgDelay / clicksPerTurn;
 			oldpos[0] = position[0];
 			oldpos[1] = position[1];
 			iteradorIndice=(iteradorIndice+1)%4;
 			indx = 0;
+			velocidadActualizada = 1;
 		}
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
@@ -244,6 +246,20 @@ void TIM3_IRQHandler(void)
   /* USER CODE BEGIN TIM3_IRQn 1 */
 
   /* USER CODE END TIM3_IRQn 1 */
+}
+
+/**
+  * @brief This function handles USB On The Go FS global interrupt.
+  */
+void OTG_FS_IRQHandler(void)
+{
+  /* USER CODE BEGIN OTG_FS_IRQn 0 */
+
+  /* USER CODE END OTG_FS_IRQn 0 */
+  HAL_PCD_IRQHandler(&hpcd_USB_OTG_FS);
+  /* USER CODE BEGIN OTG_FS_IRQn 1 */
+
+  /* USER CODE END OTG_FS_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
