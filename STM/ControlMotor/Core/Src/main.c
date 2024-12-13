@@ -221,7 +221,7 @@ int main(void)
 //		else
 //			sprintf(msg_dch, "%s%s", "d", valor_dch);
 
-		sprintf(msg, "d+%.3f\n", actualSpeed[1][iteradorIndice]);
+		sprintf(msg, "d+%.3f\n", actualSpeed[0][iteradorIndice]);
 
 		CDC_Transmit_FS(msg, sizeof(msg));
 		velocidadActualizada = 0;

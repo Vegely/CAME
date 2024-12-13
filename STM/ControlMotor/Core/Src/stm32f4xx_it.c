@@ -62,7 +62,7 @@ extern TIM_HandleTypeDef htim3;
 int indx =0; //Keep track of miliseconds
 int16_t oldpos[2]={0,0};
 
-#define movingAvgDelay 250
+#define movingAvgDelay 100
 #define clicksPerTurn 48
 extern uint8_t iteradorIndice;
 
@@ -198,7 +198,7 @@ void SysTick_Handler(void)
 	indx++;
 
 		if (indx == movingAvgDelay){
-			actualSpeed[0][iteradorIndice] =(position[0] - oldpos[0]) *1000/ movingAvgDelay / clicksPerTurn;
+			actualSpeed[0][iteradorIndice] =(position[0] - oldpos[0]) *1000*60/ movingAvgDelay / clicksPerTurn;
 			actualSpeed[1][iteradorIndice]=(position[1] - oldpos[1]) *1000*60/ movingAvgDelay / clicksPerTurn;
 			oldpos[0] = position[0];
 			oldpos[1] = position[1];
